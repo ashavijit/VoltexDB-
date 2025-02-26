@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.atml": "html",
+    "*.njk": "html",
+    "*.fish": "powershell",
+    "*.js": "javascript",
+    "*.mdx": "markdown",
+    ".babelrc": "json",
+    ".huskyrc": "json",
+    ".env*": "dotenv",
+    "array": "cpp",
+    "deque": "cpp",
+    "vector": "cpp"
+  }
+}

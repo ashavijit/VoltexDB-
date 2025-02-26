@@ -43,6 +43,38 @@ void VoltaxServer::handle_client(std::shared_ptr<boost::asio::ip::tcp::socket> s
           } else if (command == "TTL") {
               boost::asio::write(*socket, boost::asio::buffer(std::to_string(db.ttl(key)) + "\n"));
           }
+          // list
+            else if (command == "LPUSH") {
+                stream >> value;
+                db.lpush(key, value);
+                boost::asio::write(*socket, boost::asio::buffer("OK\n"));
+            } else if (command == "RPUSH") {
+                stream >> value;
+                db.rpush(key, value);
+                boost::asio::write(*socket, boost::asio::buffer("OK\n"));
+            } else if (command == "LPOP") {
+                boost::asio::write(*socket, boost::asio::buffer(db.lpop(key) + "\n"));
+            } else if (command == "RPOP") {
+                boost::asio::write(*socket, boost::asio::buffer(db.rpop(key) + "\n"));
+            } else if (command == "LRANGE") {
+                int start, end;
+                stream >> start >> end;
+                auto values = db.lrange(key, start, end);
+                for (const auto &value : values) {
+                    boost::asio::write(*socket, boost::asio::buffer(value + " "));
+                }
+                boost::asio::write(*socket, boost::asio::buffer("\n"));
+            } else if (command == "LCYCLE") {
+                db.lcycle(key);
+                boost::asio::write(*socket, boost::asio::buffer("OK\n"));
+            } else if (command == "LREMOVE") {
+                stream >> value;
+                db.lremove(key, value);
+                boost::asio::write(*socket, boost::asio::buffer("OK\n"));
+            } else {
+                boost::asio::write(*socket, boost::asio::buffer("ERROR\n"));
+            }
+
           handle_client(socket);
       } });
 }

@@ -21,6 +21,12 @@ int main()
   send_command("TTL foo");
   send_command("DEL foo");
   send_command("GET foo");
+  /// list
+
+  send_command("LPUSH mylist 1");
+  send_command("LPUSH mylist 2");
+  send_command("LPUSH mylist 3");
+  send_command("LRANGE mylist 0 2");
 
   return 0;
 }
